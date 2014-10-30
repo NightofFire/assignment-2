@@ -85,7 +85,6 @@ int main(int argc, char* argv[])
 		}
 		else if (command == "M" || command == "m")
 		{
-			cout << "Enter the playlist you want to modify" << endl;
 			playlist.modify(arg1, songDatabase, name, artist, album, time, year);
 		}
 		else if (command == "D" || command == "d")
