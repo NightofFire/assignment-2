@@ -15,9 +15,8 @@ void Song::print(ostream& stream,string text)
 	stream << text;
 	return;
 }
-void Song::readSongList(int argc, char* argv[])
+void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 {
-	print(cerr, "hey \n");
 	ifstream input;
 	if (argc > 1)
 		input.open(argv[1]);
@@ -25,11 +24,11 @@ void Song::readSongList(int argc, char* argv[])
 		input.open("songs.csv");
 	if (input.fail())
 	{
-		cerr << "Unable to open file. " << endl;
-		cerr << "This program will now exit. " << endl;
+		error << "Unable to open file. " << endl;
+		error << "This program will now exit. " << endl;
 	}
 	else
-		cerr << "FILE OPENED SUCCESSFULLY" << endl;
+		error << "FILE OPENED SUCCESSFULLY" << endl;
 	bool checkedHeadings = false;
 	string word;
 	//string heading; 
@@ -46,13 +45,12 @@ void Song::readSongList(int argc, char* argv[])
 				if (word == "\"Name\"	\"Artist\"	\"Album\"	\"Genre\"	\"Size\"	\"Time\"	\"Year\"	\"Comments\"")
 					//	"\"sname\"	\"Artist\"	\"Album\"	\"Genre\"	\"Size\"	\"Time\"	\"Year\"	\"Comments\""
 				{
-					cerr << "TRUE" << endl;
 				}
 				else
 				{
-					cerr << "Headings are wrong or formatted incorrectly." << endl;
-					cerr << "The heading fields are tab-separated and enclosed in double-quotes." << endl;
-					cerr << "Example:"<<endl<<
+					error << "Headings are wrong or formatted incorrectly." << endl;
+					error << "The heading fields are tab-separated and enclosed in double-quotes." << endl;
+					error << "Example:"<<endl<<
 						"\"name\"	\"Artist\"	\"Album\"	\"Genre\"	\"Size\"	\"Time\"	\"Year\"	\"Comments\" "<< endl;
 					exit(1);
 				}
@@ -79,8 +77,8 @@ void Song::readSongList(int argc, char* argv[])
 				}
 				if (numQuotes != 16)
 				{
-					cerr << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
-					cerr << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
+					error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
+					error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
 					exit(1);
 				}
 				//cout << numQuotes << endl;
@@ -108,8 +106,8 @@ void Song::readSongList(int argc, char* argv[])
 						//cout << length << endl;
 						if (2 >= length || sname == "" || sname[0] != '\"' || sname[found - 1] != '\"')
 						{
-							cerr << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
-							cerr << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
+							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
+							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
 							exit(1);
 						}
 						name.push_back(sname);
@@ -141,8 +139,8 @@ void Song::readSongList(int argc, char* argv[])
 						//cout << length << endl;
 						if (2 >= length || sname == "" || sname[0] != '\"' || sname[found - pos - 1] != '\"')
 						{
-							cerr << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
-							cerr << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
+							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
+							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
 							exit(1);
 						}
 						//cout << word.substr(pos, found-pos) << "dsa" << endl;
@@ -153,8 +151,8 @@ void Song::readSongList(int argc, char* argv[])
 						//cout << found << "," << pos << "," << found - pos - 1 << endl;
 						if (2 > length || sname[0] != '\"' || sname[found - pos - 1] != '\"')
 						{
-							cerr << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
-							cerr << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
+							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
+							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
 							exit(1);
 						}
 					}
@@ -167,16 +165,16 @@ void Song::readSongList(int argc, char* argv[])
 						//cout << length-1 << "-" << temp - pos << endl;
 						if (temp == string::npos || length-1!=temp-pos)
 						{
-							cerr << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
-							cerr << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
+							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
+							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
 							exit(1);
 						}
 						//cout << length << "-" << sname[0] << "-" << sname[temp - pos] << endl;
 						if (2 > length || sname[0] != '\"' || sname[temp-pos] != '\"')
 						{
-							cerr << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
-							cerr << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
-							cerr << "No extra space should be allowed outside the field" << endl;
+							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
+							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
+							error << "No extra space should be allowed outside the field" << endl;
 							exit(1);
 						}
 						comments.push_back(sname);
@@ -213,8 +211,8 @@ void Song::readSongList(int argc, char* argv[])
 				//cout << numQuotes << endl;
 				if (numTab != 7)
 				{
-					cerr << "ERROR: Each line have to contains eight fields, corresponding to the headings." << endl;
-					cerr << "Only the first two fields: name and Artist are mandatory on the line." << endl;
+					error << "ERROR: Each line have to contains eight fields, corresponding to the headings." << endl;
+					error << "Only the first two fields: name and Artist are mandatory on the line." << endl;
 					exit(1);
 				}
 				//cout << endl;
@@ -228,7 +226,7 @@ void Song::readSongList(int argc, char* argv[])
 				cout << eightWord.size()<<" ";*/
 				/*if (eightWord.size() != 8)
 				{
-					cerr << "ERROR" << endl;
+					error << "ERROR" << endl;
 				}
 				eightWord.clear();
 				ss.clear();*/
@@ -251,8 +249,8 @@ void Song::readSongList(int argc, char* argv[])
 
 		}*/
 		//cout << songDatabase.size() << endl;
-		cout << songDatabase[8] << endl;
-		cout << time[0] << endl;
+		//cout << songDatabase[8] << endl;
+		//cout << time[0] << endl;
 	}
 }
 vector<string> &Song::getName()

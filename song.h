@@ -25,7 +25,7 @@ public:
 	Song();
 	~Song();
 	void print(ostream& stream,string text);
-	void readSongList(int argc, char* argv[]);
+	void readSongList(int argc, char* argv[], ostream& error = cout, ostream& out = cout);
 	vector<string> &getName();
 	vector<string> &getArtist();
 	vector<string> &getAlbum();
