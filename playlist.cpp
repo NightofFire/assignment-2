@@ -108,6 +108,10 @@ void Playlist::listPlaylist()
 			it2++;
 		}
 	}
+	else
+	{
+		cerr << "NO PLAYLIST" << endl;
+	}
 }
 void Playlist::view(const vector<string>& vdataBase, vector<string>& vname, vector<string>& vartist, vector<string>& valbum, vector<string>& vtime, vector<string>& vyear)
 {
@@ -116,9 +120,7 @@ void Playlist::view(const vector<string>& vdataBase, vector<string>& vname, vect
 		string choice;
 		string command;
 		string arg1;
-		string arg2;
 		int iarg1 = 0;
-		int iarg2 = 0;
 		getline(cin, choice);
 		if (choice[0] == NULL || choice[0] == ' ' || choice[0] == '	')
 		{
@@ -151,71 +153,81 @@ void Playlist::view(const vector<string>& vdataBase, vector<string>& vname, vect
 			counter++;
 			//cout << counter << endl;
 		}
-		it = playList.begin();
-		list<string>::iterator it2;
-		list<string>::iterator it3;
-		cout << arg1 << endl;
-		it2 = find(it, playList.end(), arg1);
-		it3 = playListNames.begin();
-		int playListPos = 0;
-		for (int i = 0; i < playListNames.size(); ++i)
+		if (command == "View")
 		{
-			if (arg1 == *it3)
+			if (find(playList.begin(), playList.end(), arg1) != playList.end())
 			{
-				playListPos = i;
-				break;
-			}
-			it3++;
-		}
-		//cout << "test " << playListPos << endl;
-		list<string>::iterator it4;
-		list<int>::iterator it5;
-		it4 = it2;
-		it5 = playListSize.begin(); 
-		advance(it5, playListPos);
-		advance(it4, *it5);
-		for (it2; it2 != it4; it2++)
-		{
-			vit = find(vname.begin(), vname.end(), *it2);
-			if (vit != vname.end())
-			{
-				int pos = vit - vname.begin();
-				string artist = vartist[pos];
-				string name = vname[pos];
-				string album = valbum[pos];
-				string timE = vtime[pos];
-				string year = vyear[pos];
-				int time = 0;
-				artist.erase(artist.begin(), artist.begin() + 1);
-				artist.erase(artist.end() - 1, artist.end());
-				name.erase(name.begin(), name.begin() + 1);
-				name.erase(name.end() - 1, name.end());
-				album.erase(album.begin(), album.begin() + 1);
-				album.erase(album.end() - 1, album.end());
-				timE.erase(timE.begin(), timE.begin() + 1);
-				timE.erase(timE.end() - 1, timE.end());
-				year.erase(year.begin(), year.begin() + 1);
-				year.erase(year.end() - 1, year.end());
-				if (timE != "" || timE != " " || timE != "	")
+				it = playList.begin();
+				list<string>::iterator it2;
+				list<string>::iterator it3;
+				cout << arg1 << endl;
+				it2 = find(it, playList.end(), arg1);
+				it3 = playListNames.begin();
+				int playListPos = 0;
+				for (int i = 0; i < playListNames.size(); ++i)
 				{
-					istringstream(timE) >> time;
+					if (arg1 == *it3)
+					{
+						playListPos = i;
+						break;
+					}
+					it3++;
 				}
-				int minutes = time / 60;
-				//cout << minutes << endl;
-				int seconds = time % 60;
-				//cout << setw(2) << setfill('0') << minutes << endl;
+				//cout << "test " << playListPos << endl;
+				list<string>::iterator it4;
+				list<int>::iterator it5;
+				it4 = it2;
+				it5 = playListSize.begin();
+				advance(it5, playListPos);
+				advance(it4, *it5);
+				for (it2; it2 != it4; it2++)
+				{
+					vit = find(vname.begin(), vname.end(), *it2);
+					if (vit != vname.end())
+					{
+						int pos = vit - vname.begin();
+						string artist = vartist[pos];
+						string name = vname[pos];
+						string album = valbum[pos];
+						string timE = vtime[pos];
+						string year = vyear[pos];
+						int time = 0;
+						artist.erase(artist.begin(), artist.begin() + 1);
+						artist.erase(artist.end() - 1, artist.end());
+						name.erase(name.begin(), name.begin() + 1);
+						name.erase(name.end() - 1, name.end());
+						album.erase(album.begin(), album.begin() + 1);
+						album.erase(album.end() - 1, album.end());
+						timE.erase(timE.begin(), timE.begin() + 1);
+						timE.erase(timE.end() - 1, timE.end());
+						year.erase(year.begin(), year.begin() + 1);
+						year.erase(year.end() - 1, year.end());
+						if (timE != "" || timE != " " || timE != "	")
+						{
+							istringstream(timE) >> time;
+						}
+						int minutes = time / 60;
+						//cout << minutes << endl;
+						int seconds = time % 60;
+						//cout << setw(2) << setfill('0') << minutes << endl;
 
-				//cout << setw(2) << setfill('0') << 173 / 60 << ":" << setw(2) << 173 % 60 << endl;
-				cout << setw(5) << setfill(' ') << right << pos + 1 << " ";
-				cout << setw(20) << setfill(' ') << left << artist.substr(0, 20) << " ";
-				cout << setw(30) << setfill(' ') << left << name.substr(0, 30) << " ";
-				cout << setw(10) << setfill(' ') << left << album.substr(0, 10) << " ";
-				cout << setw(2) << right << setfill('0') << minutes;
-				cout << ":";
-				cout << setw(2) << right << setfill('0') << seconds << " ";
-				cout << setw(4) << setfill(' ') << year << endl;
-				//cout << setw(5) << right << i + 1 << setw(20) << left << artist << setw(30) << left << name << setw(10) << left << album
-				//<< setw(2) << setfill('0') << minute / 60 << setw(2) << setfill('0') << minute % 60 << year << endl;
+						//cout << setw(2) << setfill('0') << 173 / 60 << ":" << setw(2) << 173 % 60 << endl;
+						cout << setw(5) << setfill(' ') << right << pos + 1 << " ";
+						cout << setw(20) << setfill(' ') << left << artist.substr(0, 20) << " ";
+						cout << setw(30) << setfill(' ') << left << name.substr(0, 30) << " ";
+						cout << setw(10) << setfill(' ') << left << album.substr(0, 10) << " ";
+						cout << setw(2) << right << setfill('0') << minutes;
+						cout << ":";
+						cout << setw(2) << right << setfill('0') << seconds << " ";
+						cout << setw(4) << setfill(' ') << year << endl;
+						//cout << setw(5) << right << i + 1 << setw(20) << left << artist << setw(30) << left << name << setw(10) << left << album
+						//<< setw(2) << setfill('0') << minute / 60 << setw(2) << setfill('0') << minute % 60 << year << endl;
+					}
+				}
+			}
+			else
+			{
+				cerr << "INVALID PLAYLIST" << endl;
 			}
 		}
 	}
@@ -241,9 +253,10 @@ bool Playlist::create()
 		return true;
 	}
 }
-void Playlist::modify(const vector<string>& vdataBase, vector<string>& vname, vector<string>& vartist, vector<string>& valbum, vector<string>& vtime,vector<string>& vyear)
+void Playlist::modify(string plays, const vector<string>& vdataBase, vector<string>& vname, vector<string>& vartist, vector<string>& valbum, vector<string>& vtime, vector<string>& vyear)
 {
 	bool quit = false;
+	string playName = plays;
 	while (!quit)
 	{
 		cout << "[L/l]	<first> <last>	List all songs from database from first to last" << endl;
@@ -253,7 +266,55 @@ void Playlist::modify(const vector<string>& vdataBase, vector<string>& vname, ve
 		cout << "Delete	<songid>    	Delete songid from playlist" << endl;
 		cout << "Show	    	       	Display the songs in the playlist" << endl;
 		cout << "Back	    	    	Return to the top-level menu." << endl;
-
+		
+		if (find(playListNames.begin(), playListNames.end(), playName) != playListNames.end() && !newPlayList)
+		{
+			list<string>::iterator it2;
+			list<string>::iterator it3;
+			//cout << arg1 << endl;
+			it2 = find(playList.begin(), playList.end(), playName);
+			it3 = playListNames.begin();
+			int disT = distance(playList.begin(), it2);
+			int playListPos = 0;
+			for (int i = 0; i < playListNames.size(); ++i)
+			{
+				if (playName == *it3)
+				{
+					playListPos = i;
+					break;
+				}
+				it3++;
+			}
+			//cout << "test " << playListPos << endl;
+			list<string>::iterator it4;
+			list<int>::iterator it5;
+			it4 = it2;
+			it5 = playListSize.begin();
+			advance(it5, playListPos);
+			advance(it4, *it5);
+			for (it2; it2 != it4; it2++)
+			{
+				tempList.push_back(*it2);
+				cout << *it2 << endl;
+			}
+			it = find(playListNames.begin(), playListNames.end(), playName);
+			disT = distance(playListNames.begin(), it);
+			playListNames.erase(it);
+			list<int>::iterator it6;
+			it6 = playListSize.begin();
+			advance(it6, disT);
+			int sizeT = *it6;
+			playListSize.erase(it6);
+			list<string>::iterator it7;
+			list<string>::iterator it8;
+			it7 = find(playList.begin(), playList.end(), playName);
+			it8 = it7;
+			advance(it8, sizeT);
+			while (it7 != it8)
+			{
+				it7 = playList.erase(it7);
+			}
+		}
 		string choice;
 		string command;
 		string arg1;
@@ -549,7 +610,26 @@ void Playlist::modify(const vector<string>& vdataBase, vector<string>& vname, ve
 				playListNames.push_back(*tempList.begin());
 				playListSize.push_back(tempList.size());
 				tempList.clear();
+				newPlayList = false;
 				//cout << "heyyyy" << endl;
+			}
+			else
+			{
+				for (it = tempList.begin(); it != tempList.end(); it++)
+				{
+					playList.push_back(*it);
+					cout << *it << endl;
+					//cout << *it << endl;
+				}
+				playListNames.push_back(*tempList.begin());
+				cout << "size "<< tempList.size() << endl;
+				playListSize.push_back(tempList.size());
+				for (it = playList.begin(); it != playList.end(); it++)
+				{
+					cout << "playlist : "<< *it << endl;
+					//cout << *it << endl;
+				}
+				tempList.clear();
 			}
 			quit = true;
 			//cout << quit <<"ds"<< endl;
@@ -559,4 +639,45 @@ void Playlist::modify(const vector<string>& vdataBase, vector<string>& vname, ve
 			cout << "Invalid input" << endl;
 		}
 	}
+}
+void Playlist::deletePlaylist(string play)
+{
+	string playName = play;
+	if (find(playListNames.begin(), playListNames.end(), playName) != playListNames.end())
+	{
+		it = find(playListNames.begin(), playListNames.end(), playName);
+		int disT = distance(playListNames.begin(), it);
+		playListNames.erase(it);
+		list<int>::iterator it2;
+		it2 = playListSize.begin();
+		advance(it2, disT);
+		int sizeT = *it2;
+		playListSize.erase(it2);
+		list<string>::iterator it3;
+		list<string>::iterator it4;
+		it3 = find(playList.begin(), playList.end(), playName);
+		it4 = it3;
+		advance(it4, sizeT);
+		while (it3 != it4)
+		{
+			it3 = playList.erase(it3);
+		}
+		displayMenu();
+	}
+	else
+	{
+		cerr << "ERROR : PLAYLIST DOES NOT EXIST" << endl;
+		displayMenu();
+	}
+}
+void Playlist::save(string txt, ofstream &out)
+{
+	string outPut = txt;
+	out.open(outPut);
+
+}
+void Playlist::help()
+{
+	cout << "List	Display each playlist with the number of songs in that playlist on the terminal." << endl;
+	cout << "View <playlist>	Display the songs in the <playlist> with tags on the terminal" << endl;
 }

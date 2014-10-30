@@ -24,9 +24,9 @@ public:
 	void listPlaylist();
 	void view(const vector<string>&, vector<string>&, vector<string>&, vector<string>&, vector<string>&, vector<string>&);
 	bool create();
-	void modify(const vector<string>&, vector<string>&, vector<string>&, vector<string>&, vector<string>&, vector<string>&);
-	void deletePlaylist();
-	void save();
+	void modify(string, const vector<string>&, vector<string>&, vector<string>&, vector<string>&, vector<string>&, vector<string>&);
+	void deletePlaylist(string);
+	void save(string, ofstream&);
 	void help();
 };
 #endif

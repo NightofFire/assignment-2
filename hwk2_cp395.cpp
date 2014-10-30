@@ -38,6 +38,7 @@ int main(int argc, char* argv[])
 	Song song;
 	song.readSongList(argc, argv);
 	Playlist playlist;
+	playlist.help();
 	//playlist.displayMenu();
 	vector<string> name = song.getName();
 	vector<string> artist = song.getArtist();
@@ -49,18 +50,29 @@ int main(int argc, char* argv[])
 	vector<string> comments = song.getComments();
 	vector<string> songDatabase = song.getSongDatabase();
 	cout << "artist size-"<<artist.size() << endl;
+	string play;
 	if (playlist.create())
 	{
-		playlist.modify(songDatabase, name, artist, album, time, year);
+		playlist.modify(play, songDatabase, name, artist, album, time, year);
 	}
+	/*cout << "mod a playlist" << endl;
+	getline(cin, play);
+	playlist.modify(play, songDatabase, name, artist, album, time, year);
+	cout << "mod a playlist" << endl;
+	getline(cin, play);
+	playlist.modify(play, songDatabase, name, artist, album, time, year);*/
 	if (playlist.create())
 	{
-		playlist.modify(songDatabase, name, artist, album, time, year);
+		playlist.modify(play, songDatabase, name, artist, album, time, year);
 	}
+	/*
 	if (playlist.create())
 	{
-		playlist.modify(songDatabase, name, artist, album, time, year);
-	}
+		playlist.modify(play, songDatabase, name, artist, album, time, year);
+	}*/
+	cout << "Delete a playlist" << endl;
+	getline(cin, play);
+	playlist.deletePlaylist(play);
 	playlist.listPlaylist();
 	playlist.view(songDatabase, name, artist, album, time, year);
 
