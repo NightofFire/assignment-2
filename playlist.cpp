@@ -259,7 +259,7 @@ void Playlist::modify(string plays, const vector<string>& vdataBase, vector<stri
 			//first letter cannot be empty
 			if (choice[0] == 0 || choice[0] == ' ' || choice[0] == '	')
 			{
-				error << "error" << endl;
+				error << "command cannot be empty" << endl;
 				continue;
 			}
 			int pos = 0;							//stores position
