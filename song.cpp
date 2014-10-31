@@ -47,6 +47,7 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 	{
 		error << "Unable to open file. " << endl;
 		error << "This program will now exit. " << endl;
+		exit(0);
 	}
 	else
 		error << "FILE OPENED SUCCESSFULLY" << endl;
