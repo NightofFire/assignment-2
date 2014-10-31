@@ -1,3 +1,16 @@
+/*******************************************************************************
+Title          : cp395_hwk2.cpp
+Author         : Cheng Pan
+Created on     : September 22, 2014
+Description    : Playlist manager. Create, modify, delete and view a playlist
+				 saving the playlist to a text file
+Purpose        : get use to using class , linked list, processing string data and
+				 organizing large programs
+Usage          : ./cp395_hwk2 file.csv
+Build with     : g++ -o cp395_hwk2 cp395_hwk2.cpp song.cpp playlist.cpp
+Modifications  :
+*******************************************************************************/
+
 #ifndef PLAYLIST_H_
 #define PLAYLIST_H_
 
