@@ -19,6 +19,7 @@ Modifications  :
 #include <algorithm>
 #include <fstream>
 #include <iomanip>
+#include <stdlib.h>
 #include "playlist.h"
 using namespace std;
 
@@ -256,7 +257,7 @@ void Playlist::modify(string plays, const vector<string>& vdataBase, vector<stri
 			int iarg2 = 0;
 			getline(cin, choice);
 			//first letter cannot be empty
-			if (choice[0] == NULL || choice[0] == ' ' || choice[0] == '	')
+			if (choice[0] == 0 || choice[0] == ' ' || choice[0] == '	')
 			{
 				error << "error" << endl;
 				continue;
@@ -599,7 +600,7 @@ void Playlist::save(string txt, ofstream &fileOut, vector<string> &vname, ostrea
 	{
 		//output to the textfile the user entered
 		string outPut = txt;
-		fileOut.open(outPut);
+		fileOut.open(outPut.c_str());
 		list<int>::iterator it2;
 		list<string>::iterator it3;
 		it = playListNames.begin();

@@ -15,6 +15,7 @@ Modifications  :
 #include <vector>
 #include <sstream>
 #include <fstream>
+#include <stdlib.h>
 #include "song.h"
 using namespace std;
 
@@ -67,7 +68,7 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 					error << "The heading fields are tab-separated and enclosed in double-quotes." << endl;
 					error << "Example:"<<endl<<
 						"\"name\"	\"Artist\"	\"Album\"	\"Genre\"	\"Size\"	\"Time\"	\"Year\"	\"Comments\" "<< endl;
-					exit(1);
+					exit(0);
 				}
 				checkedHeadings = true;
 			}
@@ -87,7 +88,7 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 				{
 					error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
 					error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
-					exit(1);
+					exit(0);
 				}
 				int numTab = 0;							//store the # of tabs
 				int pos = 0;							//store the position of the tabs
@@ -110,7 +111,7 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
 							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
-							exit(1);
+							exit(0);
 						}
 						name.push_back(sname);
 						songDatabase.push_back(sname);
@@ -133,7 +134,7 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
 							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
-							exit(1);
+							exit(0);
 						}
 						snameArtist = true;
 					}
@@ -143,7 +144,7 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
 							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
-							exit(1);
+							exit(0);
 						}
 					}
 					else
@@ -158,14 +159,14 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
 							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
-							exit(1);
+							exit(0);
 						}
 						if (2 > length || sname[0] != '\"' || sname[temp-pos] != '\"')
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
 							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
 							error << "No extra space should be allowed outside the field" << endl;
-							exit(1);
+							exit(0);
 						}
 						comments.push_back(sname);
 						
@@ -203,7 +204,7 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 				{
 					error << "ERROR: Each line have to contains eight fields, corresponding to the headings." << endl;
 					error << "Only the first two fields: name and Artist are mandatory on the line." << endl;
-					exit(1);
+					exit(0);
 				}
 			}
 

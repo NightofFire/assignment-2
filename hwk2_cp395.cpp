@@ -14,11 +14,9 @@ Modifications  :
 #include <string>
 #include <fstream>
 #include <vector>
-#include <sstream>
 #include <algorithm>
-#include <iterator>
 #include <list>
-#include <iomanip>
+#include <stdlib.h>
 #include "song.h"
 #include "playlist.h"
 using namespace std;
@@ -54,9 +52,9 @@ int main(int argc, char* argv[])
 		getline(cin, choice);	//userinput
 		//check if the first letter is empty or not.
 		//If it's empty, skip the rest of the loop and do the input again.
-		if (choice[0] == NULL || choice[0] == ' ' || choice[0] == '	')
+		if (choice[0] == 0 || choice[0] == ' ' || choice[0] == '	')
 		{
-			cerr << "error" << endl;
+			cerr << "command cannot be empty" << endl;
 			continue;
 		}
 		int pos = 0;						//position
@@ -142,7 +140,7 @@ int main(int argc, char* argv[])
 		else if (command == "Q" || command == "q")
 		{											//If user entered Q/q, exit the program
 			quit = true;
-			exit(1);
+			exit(0);
 		}
 		else
 		{
