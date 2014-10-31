@@ -6,47 +6,50 @@
 #include "song.h"
 using namespace std;
 
+/******************************************************************************/
+/*                           Function Definitions                             */
+/******************************************************************************/
+
+/**
+	Song() A default constructor for the Song class
+*/
 Song::Song()
 {}
+/**
+	Song() A default destructor for the Song class
+*/
 Song::~Song()
 {}
-void Song::print(ostream& stream,string text)
-{
-	stream << text;
-	return;
-}
+/**
+	readSongList(argc, argv, ostream& error = cerr, ostream& out = cout)  list all the playlist with the number of songs each playlist have
+*/
 void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 {
 	ifstream input;
-	if (argc > 1)
-		input.open(argv[1]);
+	if (argc > 1)					//if user entered a commandline argument
+		input.open(argv[1]);		//open the file user entered
 	else
-		input.open("songs.csv");
-	if (input.fail())
+		input.open("songs.csv");	//else, open the default file
+	if (input.fail())				//Check if it can open the file or not
 	{
 		error << "Unable to open file. " << endl;
 		error << "This program will now exit. " << endl;
 	}
 	else
 		error << "FILE OPENED SUCCESSFULLY" << endl;
-	bool checkedHeadings = false;
+	bool checkedHeadings = false;	//use to check the heading once during the loop
 	string word;
-	//string heading; 
 	if (input.good())
 	{
-		while (getline(input, word))
+		while (getline(input, word))		//loop to get each line in the file
 		{
 			
-			if (checkedHeadings == false)
+			if (checkedHeadings == false)	//only check the heading once
 			{
-				//ss.str(word);
-				//heading = ss.str();
-				//cout << words << endl;
 				if (word == "\"Name\"	\"Artist\"	\"Album\"	\"Genre\"	\"Size\"	\"Time\"	\"Year\"	\"Comments\"")
-					//	"\"sname\"	\"Artist\"	\"Album\"	\"Genre\"	\"Size\"	\"Time\"	\"Year\"	\"Comments\""
 				{
 				}
-				else
+				else		//if heading is wrong, output error message and exit the program
 				{
 					error << "Headings are wrong or formatted incorrectly." << endl;
 					error << "The heading fields are tab-separated and enclosed in double-quotes." << endl;
@@ -54,56 +57,43 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 						"\"name\"	\"Artist\"	\"Album\"	\"Genre\"	\"Size\"	\"Time\"	\"Year\"	\"Comments\" "<< endl;
 					exit(1);
 				}
-				/*ss << word;
-				while (ss >> sstream)
-				{
-
-				}*/
-				//cout << sstream << endl;
 				checkedHeadings = true;
-				ss.clear();
 			}
 			else
 			{
-				int qPos = 0;
-				int findQuotes = word.find('\"', qPos);
-				int numQuotes = 0;
-				int counter = 0;
-				while (findQuotes != string::npos)
+				int qPos = 0;							//store the quote position
+				int findQuotes = word.find('\"', qPos);	//find the position of quotes
+				int numQuotes = 0;						//count the # of quotes
+				int counter = 0;						//to see which field to store into which vector
+				while (findQuotes != string::npos)		//loop to find all the quotes
 				{
 					qPos = findQuotes + 1;
 					findQuotes = word.find('\"', qPos);
 					numQuotes++;
 				}
-				if (numQuotes != 16)
+				if (numQuotes != 16)					//2 quotes for each field. 8 fields, so it's 16 quotes total.
 				{
 					error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
 					error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
 					exit(1);
 				}
-				//cout << numQuotes << endl;
-				int numTab = 0;
-				int pos = 0;
+				int numTab = 0;							//store the # of tabs
+				int pos = 0;							//store the position of the tabs
 				int found = word.find("	", pos);
-				bool snameArtist = false;		//use to check the first two field of each line, sname and Artist.
+				bool snameArtist = false;				//use to check the first two field of each line, sname and Artist.
 				while (found != string::npos)
 				{
-					
-					//cout << found << " ";
-					if (snameArtist == false)
+					if (snameArtist == false)			//first two fields cannot be empty
 					{
 						int length = 0;
 						string sname = word.substr(0, found);
 						string temp;
 						ss << sname;
-						while (ss >> temp)
+						while (ss >> temp)				//stringstream to get the length of each substring
 						{
 							length += temp.length();
-							//cout << length << endl;
 						}
 						ss.clear();
-						//cout << word.substr(0, found) << "dsa-";
-						//cout << length << endl;
 						if (2 >= length || sname == "" || sname[0] != '\"' || sname[found - 1] != '\"')
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
@@ -112,43 +102,31 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 						}
 						name.push_back(sname);
 						songDatabase.push_back(sname);
-						/*if (sname.length()sname != "\"\"" && sname!= "")
-						{
-							//cout << "true" << endl;
-						}
-						else{
-							cout << sname.length() << endl;
-							cout << "false" << endl;
-						}*/
 					}
-					pos=found+1;
-					found = word.find("	", pos);
+					//used to get all the other fields
+					pos=found+1;					//position of the previous + 1
+					found = word.find("	", pos);	//new position of the next tab space
 					int length = 0;
-					string sname = word.substr(pos, found - pos);
-					//cout << sname << "-";
+					string sname = word.substr(pos, found - pos);	//get the string between the quotes
 					string temp;
 					ss << sname;
-					while (ss >> temp)
+					while (ss >> temp)								//stringstream to get the length of each substring
 					{
 						length += temp.length();
-						//cout << length << endl;
 					}
 					ss.clear();
 					if (snameArtist == false)
 					{
-						//cout << length << endl;
 						if (2 >= length || sname == "" || sname[0] != '\"' || sname[found - pos - 1] != '\"')
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
 							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
 							exit(1);
 						}
-						//cout << word.substr(pos, found-pos) << "dsa" << endl;
 						snameArtist = true;
 					}
-					else if (found != string::npos)
+					else if (found != string::npos)		//enter if not found
 					{
-						//cout << found << "," << pos << "," << found - pos - 1 << endl;
 						if (2 > length || sname[0] != '\"' || sname[found - pos - 1] != '\"')
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
@@ -158,18 +136,18 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 					}
 					else
 					{
+						//there are only 7 tabs so it can only loop 7 times but there are 8 fields so comments field is left out
+						//this is used to check the comment field and stores it
 						int temp=0;
 						sname = word.substr(pos);
 						temp = word.find('\"', pos + 1);
 						length = sname.length();
-						//cout << length-1 << "-" << temp - pos << endl;
 						if (temp == string::npos || length-1!=temp-pos)
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
 							error << "A blank field is indicated by an empty set of quotes (not even white spaces should be allowed)." << endl;
 							exit(1);
 						}
-						//cout << length << "-" << sname[0] << "-" << sname[temp - pos] << endl;
 						if (2 > length || sname[0] != '\"' || sname[temp-pos] != '\"')
 						{
 							error << "The name field cannot be a blank field.The field also needs to be in quotes." << endl;
@@ -180,6 +158,7 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 						comments.push_back(sname);
 						
 					}
+					//store the fields in their vector by using the counter
 					if (counter == 0)
 					{
 						artist.push_back(sname);
@@ -204,88 +183,84 @@ void Song::readSongList(int argc, char* argv[], ostream& error, ostream& out)
 					{
 						year.push_back(sname);
 					}
-					songDatabase.push_back(sname);
+					songDatabase.push_back(sname);	//store everything inside the vector
 					counter++;
 					numTab++;
 				}
-				//cout << numQuotes << endl;
-				if (numTab != 7)
+				if (numTab != 7)					//if there're more than 7 tabs then it's wrong
 				{
 					error << "ERROR: Each line have to contains eight fields, corresponding to the headings." << endl;
 					error << "Only the first two fields: name and Artist are mandatory on the line." << endl;
 					exit(1);
 				}
-				//cout << endl;
-				//cout << n << endl;
-
-				/*ss << word;
-				while (ss >> sstream)
-				{
-					eightWord.push_back(sstream);
-				}
-				cout << eightWord.size()<<" ";*/
-				/*if (eightWord.size() != 8)
-				{
-					error << "ERROR" << endl;
-				}
-				eightWord.clear();
-				ss.clear();*/
 			}
 
 		}
-		input.clear();
-		input.seekg(65, ios::beg);
-		//getline(input, word);
-		input >> noskipws >> word;
-		//cout << word << endl;
-		/*for (int i = 0; i < songDatabase.size(); i++)
-		{
-			cout << songDatabase[i] << " ";
-			if (i != 0 && i % 7 == 0)
-			{
-				cout << i;
-				cout << endl;
-			}
-
-		}*/
-		//cout << songDatabase.size() << endl;
-		//cout << songDatabase[8] << endl;
-		//cout << time[0] << endl;
+		input.clear();					//clear the inputfile
+		input.seekg(65, ios::beg);		//goto beginning of the file
+		input >> noskipws >> word;		//do not skip spaces
 	}
 }
-vector<string> &Song::getName()
+/**
+	getName()  return vector of song names
+*/
+vector<string> &Song::getName()		//return vector of all the song names
 {
 	return name;
 }
-vector<string> &Song::getArtist()
+/**
+	getArtist()  return vector of artist names
+*/
+vector<string> &Song::getArtist()	//return vector of all the artist names
 {
 	return artist;
 }
-vector<string> &Song::getAlbum()
+/**
+	getAlbum()  return vector of album names
+*/
+vector<string> &Song::getAlbum()	//return vector of all the album names
 {
 	return album;
 }
-vector<string> &Song::getGenre()
+/**
+	getGenre()  return vector of genres
+*/
+vector<string> &Song::getGenre()	//return vector of all the genres
 {
 	return genre;
 }
-vector<string> &Song::getSize()
+/**
+	getSize()  return vector of song size
+*/
+vector<string> &Song::getSize()		//return vector of all the size of the songs
 {
 	return size;
 }
-vector<string> &Song::getTime()
+/**
+	getTime()  return vector of song duration
+*/
+vector<string> &Song::getTime()		//return vector of all the time of the songs
 {
 	return time;
 }
-vector<string> &Song::getYear()
+/**
+	getYear()  return vector of the year song was produced in
+*/
+vector<string> &Song::getYear()		//return vector of all the year of the songs
 {
 	return year;
 }
-vector<string> &Song::getComments()
+/**
+	getComments()  return vector of song comments
+*/
+vector<string> &Song::getComments()	//return vector of all the comments of the songs
 {
 	return comments;
 }
-vector<string> &Song::getSongDatabase()
+/**
+	getSongDatabase()  return vector of the entire database
+*/
+vector<string> &Song::getSongDatabase()		//return vector of that contains all of the above
 {
 	return songDatabase;
 }
