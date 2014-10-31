@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 		{											//enters if user entered C/c as the first letter
 			if (playlist.create(arg1) && counter >= 1)
 			{										//If new playlist is not a duplicate and there's more than 1 argument
-													//Enter modify mode with the new playlist
+				//Enter modify mode with the new playlist
 				playlist.modify(arg1, songDatabase, name, artist, album, time, year);
 			}
 			else									//If user didn't enter a second arugment in the input
@@ -114,6 +114,10 @@ int main(int argc, char* argv[])
 				ofstream myFile;						//pass myFile to function as reference
 				playlist.save(arg1, myFile, name);
 			}
+			else if (arg1.length() == 0)
+			{
+				cerr << "The file name cannot be empty" << endl;
+			}
 			else
 			{
 				cerr << "The file need to have the extension .txt" << endl;
@@ -134,6 +138,6 @@ int main(int argc, char* argv[])
 		}
 		playlist.displayMenu();						//display the menu
 	}
-	
+
 	return 0;
 }

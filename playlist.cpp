@@ -580,6 +580,7 @@ void Playlist::save(string txt, ofstream &fileOut, vector<string> &vname, ostrea
 	if (playListNames.size() == 0)
 	{
 		error << "There are no playlist to save" << endl;
+		fileOut.close();
 	}
 	else
 	{
