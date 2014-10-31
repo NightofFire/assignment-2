@@ -6,9 +6,9 @@ Description    : Playlist manager. Create, modify, delete and view a playlist
 saving the playlist to a text file
 Purpose        : get use to using class , linked list, processing string data and
 organizing large programs
-Usage          : ./cp395_hwk2 file.csv
-				 or ./cp395_hwk2 file.txt
-Build with     : g++ -o cp395_hwk2 cp395_hwk2.cpp song.cpp playlist.cpp
+Usage          : ./hwk2_cp395 file.csv
+				or ./hwk2_cp395 file.txt
+Build with     : g++ -o hwk2_cp395 hwk2_cp395.cpp song.cpp playlist.cpp
 Modifications  :
 *******************************************************************************/
 #include <iostream>
